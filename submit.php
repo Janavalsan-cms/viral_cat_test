@@ -87,13 +87,13 @@ $mail = new PHPMailer(true);
 
 try {
     // SMTP SETTINGS
-    $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
-    $mail->SMTPAuth   = true;
-    $mail->Username   = 'viralcatmailer@gmail.com';
-    $mail->Password   = 'welcom##vca..123'; 
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port       = 587;
+$mail->isSMTP();
+$mail->Host       = 'smtp.gmail.com';
+$mail->SMTPAuth   = true;
+$mail->Username   = 'viralcatmailer@gmail.com';
+$mail->Password   = 'YOUR_APP_PASSWORD';
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // ✅ SMTPS for 465
+$mail->Port       = 465; // ✅
 
     // Email settings
     $mail->setFrom('viralcatmailer@gmail.com', 'Viral Cat Agency Website');
