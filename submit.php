@@ -20,7 +20,7 @@ require 'assets/Exception.php';
 $isContactForm = isset($_POST['description']);
 $isMessageForm = isset($_POST['message']);
 
-$to = "janavalsandev@gmail.com";
+$to = "hello@viralcatmeow.com";
 
 // ======================
 // FORM 1
@@ -223,9 +223,8 @@ $mail->Port       = 587; // ✅
     $mail->addAddress($to);
 
     // CC
-    // $mail->addCC('lijoy@mindstory.in');
-    // $mail->addCC('jvwork001@gmail.com');
-    // $mail->addCC('lijoymindstory@gmail.com');
+    $mail->addCC('lijoy@mindstory.in');
+    $mail->addCC('lijoymindstory@gmail.com');
 
     // Reply to customer
     $mail->addReplyTo($email, $name);
