@@ -6,21 +6,21 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-// Sanitize inputs safely
+// 🔒 Sanitize inputs
 $name = htmlspecialchars(trim($_POST['name'] ?? ''));
 $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
 $description = htmlspecialchars(trim($_POST['description'] ?? ''));
 
-// Basic validation
+// 🛑 Validation
 if (!$name || !$email) {
     echo json_encode(["success" => false, "message" => "Required fields missing"]);
     exit;
 }
 
-// CHANGE THIS EMAIL
+// 🔴 CHANGE THIS IF NEEDED
 $to = "janavalsans@gmail.com";
-$subject = "New Contact Form Submission";
+$subject = "🔔 New Contact Form Submission";
 
 // ======================
 // Premium HTML Email
@@ -99,11 +99,11 @@ This email was generated automatically from your website form.
 ';
 
 // ======================
-// Email headers
+// Headers
 // ======================
 $headers = "MIME-Version: 1.0\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8\r\n";
-$headers .= "From: Website <noreply@yourdomain.com>\r\n";
+$headers .= "From: ViralCatMeow <noreply@viralcatmeow.com>\r\n";
 $headers .= "Reply-To: $email\r\n";
 
 // ======================
@@ -111,129 +111,9 @@ $headers .= "Reply-To: $email\r\n";
 // ======================
 $mailSent = mail($to, $subject, $message, $headers);
 
-if ($mailSent) {
-    echo json_encode(["success" => true]);
-} else {
-    echo json_encode(["success" => false, "message" => "Mail failed"]);
-}
-exit;
-?>
+echo json_encode([
+    "success" => $mailSent
+]);
 
-<?php
-header('Content-Type: application/json');
-
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo json_encode(["success" => false]);
-    exit;
-}
-
-// 🔒 Sanitize inputs
-$name = htmlspecialchars(trim($_POST['name'] ?? ''));
-$email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
-$website = htmlspecialchars(trim($_POST['website'] ?? ''));
-$messageText = htmlspecialchars(trim($_POST['message'] ?? ''));
-
-// 🛑 Validation
-if (!$name || !$email || !$messageText) {
-    echo json_encode(["success" => false, "message" => "Missing required fields"]);
-    exit;
-}
-
-// 🔴 CHANGE THIS EMAIL
-$to = "janavalsans@gmail.com";
-$subject = "New Contact Message";
-
-// ======================
-// Premium HTML Email
-// ======================
-$message = '
-<html>
-<head>
-<meta charset="UTF-8">
-<title>New Contact Message</title>
-</head>
-<body style="margin:0;padding:0;background:#f4f6f8;font-family:Arial,sans-serif;">
-
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f8;padding:40px 0;">
-<tr>
-<td align="center">
-
-<table width="600" cellpadding="0" cellspacing="0"
-style="background:#ffffff;border-radius:10px;overflow:hidden;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);">
-
-<tr>
-<td style="background:#111;color:#ffffff;padding:25px;text-align:center;">
-<h2 style="margin:0;">New Contact Message</h2>
-</td>
-</tr>
-
-<tr>
-<td style="padding:30px;">
-
-<table width="100%" cellpadding="10" cellspacing="0"
-style="border-collapse:collapse;">
-
-<tr>
-<td style="border-bottom:1px solid #eee;font-weight:bold;width:35%;">Name</td>
-<td style="border-bottom:1px solid #eee;">' . $name . '</td>
-</tr>
-
-<tr>
-<td style="border-bottom:1px solid #eee;font-weight:bold;">Email</td>
-<td style="border-bottom:1px solid #eee;">
-<a href="mailto:' . $email . '">' . $email . '</a>
-</td>
-</tr>
-
-<tr>
-<td style="border-bottom:1px solid #eee;font-weight:bold;">Website</td>
-<td style="border-bottom:1px solid #eee;">' . $website . '</td>
-</tr>
-
-<tr>
-<td style="border-bottom:1px solid #eee;font-weight:bold;">Message</td>
-<td style="border-bottom:1px solid #eee;">' . nl2br($messageText) . '</td>
-</tr>
-
-</table>
-
-</td>
-</tr>
-
-<tr>
-<td style="background:#f9fafb;padding:18px;text-align:center;font-size:12px;color:#888;">
-This email was generated from your website contact form.
-</td>
-</tr>
-
-</table>
-
-</td>
-</tr>
-</table>
-
-</body>
-</html>
-';
-
-// ======================
-// Headers
-// ======================
-$headers = "MIME-Version: 1.0\r\n";
-$headers .= "Content-type:text/html;charset=UTF-8\r\n";
-$headers .= "From: Website <noreply@yourdomain.com>\r\n";
-$headers .= "Reply-To: $email\r\n";
-
-// ======================
-// Send
-// ======================
-$mailSent = mail($to, $subject, $message, $headers);
-
-if ($mailSent) {
-    header("Location: thank-you.html"); // optional redirect
-} else {
-    echo "Mail sending failed.";
-}
 exit;
 ?>
