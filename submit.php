@@ -207,9 +207,9 @@ $headers .= "Reply-To: $email\r\n";
 $mailSent = mail($to, $subject, $message, $headers);
 
 if ($mailSent) {
-    header("Location: thank-you.html");
+    echo "<div style='color:green;font-weight:600;'>The form was submitted successfully.</div>";
 } else {
-    echo "Mail sending failed.";
+    echo "<div style='color:red;font-weight:600;'>Unable to send your message. Please try again later.</div>";
 }
 exit;
 ?>

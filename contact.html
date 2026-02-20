@@ -2073,7 +2073,7 @@ Reach out to us for enquiries, support, or project discussions.</p>
                                 <div class="col-lg-6">
                                     <div class="tp-contact-us-wrap">
                                         <h4 class="tp-contact-us-title mb-55">Send a Message</h4>
-                                      <form action="submit.php" method="POST">
+                                      <form id="contactForm" action="submit.php" method="POST">
 
     <!-- Fix CORS -->
     <input type="hidden" name="_origin" value="*">
@@ -2115,6 +2115,7 @@ Reach out to us for enquiries, support, or project discussions.</p>
                 </span>
             </button>
         </div>
+        <div id="formMessage" style="margin-top:15px;"></div>
     </div>
 
 </form>
@@ -2442,6 +2443,35 @@ Reach out to us for enquiries, support, or project discussions.</p>
 
     <!-- JS here -->
     <!-- JS here -->
+     <script>
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let form = this;
+    let formData = new FormData(form);
+    let messageBox = document.getElementById("formMessage");
+
+    // loading state
+    messageBox.innerHTML = "Sending...";
+    messageBox.style.color = "#555";
+
+    fetch(form.action, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        messageBox.innerHTML = data;
+        messageBox.style.color = "green";
+        form.reset();
+    })
+    .catch(() => {
+        messageBox.innerHTML = "❌ Something went wrong.";
+        messageBox.style.color = "red";
+    });
+});
+</script>
+
 
 </body>
 
