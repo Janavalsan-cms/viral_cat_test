@@ -2441,7 +2441,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="job-title-display" id="jobTitleDisplay"></div>
                     </div>
                     
-                    <form id="contactForm" action="submit.php" method="POST">
+                    <form id="JobForm" action="submit.php" method="POST">
                         <input type="hidden" id="position" name="position">
                         
                         <!-- ROW 1: Name and Email -->
@@ -2817,7 +2817,7 @@ function closePopup() {
     
     setTimeout(() => {
         // Reset form
-        document.getElementById('contactForm').reset();
+        document.getElementById('JobForm').reset();
         document.getElementById('formContainer').style.display = 'block';
         document.getElementById('thankYouContainer').style.display = 'none';
         
@@ -2842,7 +2842,7 @@ function showThankYouMessage() {
 }
 
 // Form Submission
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+document.getElementById('JobForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const form = this;
