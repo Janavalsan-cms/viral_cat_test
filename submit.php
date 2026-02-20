@@ -93,7 +93,7 @@ $mail->SMTPAuth   = true;
 $mail->Username   = 'viralcatmailer@gmail.com';
 $mail->Password   = 'welcom##vca..123';
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // ✅ SMTPS for 465
-$mail->Port       = 465; // ✅
+$mail->Port       = 587; // ✅
 
     // Email settings
     $mail->setFrom('viralcatmailer@gmail.com', 'Viral Cat Agency Website');
