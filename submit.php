@@ -42,7 +42,7 @@ if ($isContactForm) {
     box-shadow:0 10px 25px rgba(0,0,0,0.08);">
     
     <tr>
-    <td style="background:#111;color:#ffffff;padding:25px;text-align:center;">
+    <td style="background:#6f3374;color:#ffffff;padding:25px;text-align:center;">
     <h2 style="margin:0;font-weight:600;">New Contact Form Submission</h2>
     </td>
     </tr>
@@ -131,7 +131,7 @@ elseif ($isMessageForm) {
     box-shadow:0 10px 25px rgba(0,0,0,0.08);">
     
     <tr>
-    <td style="background:#111;color:#ffffff;padding:25px;text-align:center;">
+    <td style="background:#6f3374;color:#ffffff;padding:25px;text-align:center;">
     <h2 style="margin:0;">New Contact Form Submission</h2>
     </td>
     </tr>
