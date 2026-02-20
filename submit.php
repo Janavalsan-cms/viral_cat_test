@@ -84,7 +84,7 @@ if ($isContactForm) {
     
     <tr>
     <td style="background:#f9fafb;padding:20px;text-align:center;font-size:12px;color:#888;">
-    This email was generated automatically from your website form.
+    This email was generated from your website contact form.
     </td>
     </tr>
     
