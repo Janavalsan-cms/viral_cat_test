@@ -91,7 +91,7 @@ $mail->isSMTP();
 $mail->Host       = 'smtp.gmail.com';
 $mail->SMTPAuth   = true;
 $mail->Username   = 'viralcatmailer@gmail.com';
-$mail->Password   = 'welcom##vca..123';
+$mail->Password   = 'mjgr zsoy luvy iewk';
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // ✅ SMTPS for 465
 $mail->Port       = 587; // ✅
 
