@@ -145,8 +145,8 @@ try {
     $mail->setFrom('viralcatmailer@gmail.com', 'Viral Cat Agency Website');
     $mail->addAddress($to);
 
-    $mail->addCC('lijoy@mindstory.in');
-    $mail->addCC('lijoymindstory@gmail.com');
+    // $mail->addCC('lijoy@mindstory.in');
+    // $mail->addCC('lijoymindstory@gmail.com');
 
     $mail->addReplyTo($email, $name);
 
