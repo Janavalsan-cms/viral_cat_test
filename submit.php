@@ -1,4 +1,3 @@
-
 <?php
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     die("Invalid request");
@@ -51,7 +50,7 @@ if ($isContactForm) {
     
     <table width="600" cellpadding="0" cellspacing="0"
     style="background:#ffffff;border-radius:10px;overflow:hidden;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);">
+    b">
     
     <tr>
     <td style="background:#6f3374;color:#ffffff;padding:25px;text-align:center;">
@@ -139,7 +138,7 @@ elseif ($isMessageForm) {
     
     <table width="600" cellpadding="0" cellspacing="0"
     style="background:#ffffff;border-radius:10px;overflow:hidden;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);">
+    b">
     
     <tr>
     <td style="background:#6f3374;color:#ffffff;padding:25px;text-align:center;">
@@ -215,8 +214,8 @@ $mail->Host       = 'smtp.gmail.com';
 $mail->SMTPAuth   = true;
 $mail->Username   = 'viralcatmailer@gmail.com';
 $mail->Password   = 'mjgrzsoyluvyiewk';
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // ✅ SMTPS for 465
-$mail->Port       = 587; // ✅
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+$mail->Port       = 587; 
 
     // Email settings
     $mail->setFrom('viralcatmailer@gmail.com', 'Viral Cat Agency Website');
