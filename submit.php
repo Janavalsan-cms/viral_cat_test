@@ -8,7 +8,7 @@ $isContactForm = isset($_POST['description']);
 $isMessageForm = isset($_POST['message']);
 
 // CHANGE THIS EMAIL
-$to = "janavalsans@gmail.com";
+$to = "hello@viralcatmeow.com";
 
 // ======================
 // FORM 1: Contact Form (with description field)
@@ -198,7 +198,7 @@ else {
 // ======================
 $headers = "MIME-Version: 1.0\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8\r\n";
-$headers .= "From: Website <noreply@yourdomain.com>\r\n";
+$headers .= "From: Website <noreply@hello@viralcatmeow.com>\r\n";
 $headers .= "Reply-To: $email\r\n";
 
 // ======================
