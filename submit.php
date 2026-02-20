@@ -112,7 +112,7 @@ elseif ($isMessageForm) {
         die("Missing required fields");
     }
 
-    $subject = "New Contact Message";
+    $subject = "New Contact Form Submission";
     
     $message = '
     <html>
@@ -132,12 +132,15 @@ elseif ($isMessageForm) {
     
     <tr>
     <td style="background:#111;color:#ffffff;padding:25px;text-align:center;">
-    <h2 style="margin:0;">New Contact Message</h2>
+    <h2 style="margin:0;">New Contact Form Submission</h2>
     </td>
     </tr>
     
     <tr>
     <td style="padding:30px;">
+    <p style="margin-top:0;color:#555;font-size:14px;">
+    Someone submitted a form on viralcatmeow.com. Here are the details:
+    </p>
     
     <table width="100%" cellpadding="10" cellspacing="0"
     style="border-collapse:collapse;">
