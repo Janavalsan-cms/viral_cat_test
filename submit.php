@@ -16,8 +16,10 @@ require 'assets/Exception.php';
 // ======================
 // Detect form type
 // ======================
-$isContactForm = isset($_POST['description']);
-$isMessageForm = isset($_POST['message']);
+$isContactForm = isset($_POST['description']);              // contact form
+$isMessageForm = isset($_POST['message']) && !$isJobForm && !$isContactForm; // simple message form
+$isJobForm     = isset($_POST['experience']) || isset($_POST['cv_link']) || isset($_POST['position']); // job form
+
 
 $to = "janavalsan@mindstory.in";
 
