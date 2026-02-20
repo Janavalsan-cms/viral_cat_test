@@ -8,7 +8,7 @@ $isContactForm = isset($_POST['description']);
 $isMessageForm = isset($_POST['message']);
 
 // CHANGE THIS EMAIL
-$to = "hello@viralcatmeow.com";
+$to = "janavalsan@mindstory.in";
 
 // ======================
 // FORM 1: Contact Form (with description field)
