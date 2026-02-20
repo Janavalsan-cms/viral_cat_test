@@ -88,15 +88,15 @@ $mail = new PHPMailer(true);
 try {
     // SMTP SETTINGS
     $mail->isSMTP();
-    $mail->Host       = 'smtp.zoho.in';
+    $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'janavalsan@mindstory.in';
-    $mail->Password   = 'jana@mindstory##'; // 🔴 CHANGE THIS
+    $mail->Username   = 'viralcatmailer@gmail.com';
+    $mail->Password   = 'welcom##vca..123'; 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port       = 465;
+    $mail->Port       = 587;
 
     // Email settings
-    $mail->setFrom('janavalsan@mindstory.in', 'Viral Cat Agency');
+    $mail->setFrom('viralcatmailer@gmail.com', 'Viral Cat Agency Website');
     $mail->addAddress($to);
 
     // CC
