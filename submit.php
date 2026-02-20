@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = htmlspecialchars(trim($_POST['description']));
 
     // 🔴 CHANGE THIS
-    $to = "your@email.com";
+    $to = "janavalsans@gmail.com";
     $subject = "✨ New Contact Submission — Happynex";
 
     // ================= EMAIL TEMPLATE =================
