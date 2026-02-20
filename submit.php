@@ -6,21 +6,21 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-// 🔒 Sanitize inputs safely
+// Sanitize inputs safely
 $name = htmlspecialchars(trim($_POST['name'] ?? ''));
 $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
 $description = htmlspecialchars(trim($_POST['description'] ?? ''));
 
-// 🛑 Basic validation
+// Basic validation
 if (!$name || !$email) {
     echo json_encode(["success" => false, "message" => "Required fields missing"]);
     exit;
 }
 
-// 🔴 CHANGE THIS EMAIL
+// CHANGE THIS EMAIL
 $to = "janavalsans@gmail.com";
-$subject = "🔔 New Contact Form Submission";
+$subject = "New Contact Form Submission";
 
 // ======================
 // Premium HTML Email
@@ -43,14 +43,14 @@ box-shadow:0 10px 25px rgba(0,0,0,0.08);">
 
 <tr>
 <td style="background:#111;color:#ffffff;padding:25px;text-align:center;">
-<h2 style="margin:0;font-weight:600;">New Form Submission</h2>
+<h2 style="margin:0;font-weight:600;">New Contact Form Submission</h2>
 </td>
 </tr>
 
 <tr>
 <td style="padding:30px;">
 <p style="margin-top:0;color:#555;font-size:14px;">
-Someone submitted a form on your website. Here are the details:
+Someone submitted a form on viralcatmeow.com. Here are the details:
 </p>
 
 <table width="100%" cellpadding="10" cellspacing="0"
