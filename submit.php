@@ -20,7 +20,7 @@ require 'assets/Exception.php';
 $isContactForm = isset($_POST['description']);
 $isMessageForm = isset($_POST['message']);
 
-$to = "janavalsandev@gmail.com'";
+$to = "janavalsandev@gmail.com";
 
 // ======================
 // FORM 1
