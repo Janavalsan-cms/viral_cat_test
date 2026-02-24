@@ -2,38 +2,34 @@
 RewriteEngine On
 RewriteBase /
 
-# ==================== BLOG CLEAN URLS (STATIC) ====================
+# ================= STATIC BLOG PAGES =================
 
-# Skip processing for blog HTML files
-RewriteCond %{REQUEST_URI} ^/blogs\.html$ [OR]
-RewriteCond %{REQUEST_URI} ^/blog-detail\.html$
-RewriteRule ^ - [L]
+# Prevent ANY rewriting of these files
+RewriteRule ^blogs\.html$ - [L]
+RewriteRule ^blog-detail\.html$ - [L]
 
-# /blogs → /blogs.html
+# /blogs → blogs.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^blogs/?$ /blogs.html [L,NC]
+RewriteRule ^blogs/?$ blogs.html [L,NC]
 
-# /blog-detail/slug → /blog-detail.html?slug=slug
+# /blog-detail/slug → blog-detail.html?slug=
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} !^/blog/ [NC]
-RewriteRule ^blog-detail/([^/]+)/?$ /blog-detail.html?slug=$1 [L,QSA,NC]
+RewriteRule ^blog-detail/([^/]+)/?$ blog-detail.html?slug=$1 [L,QSA,NC]
 
 
-# ==================== WORDPRESS (/blog) ====================
+# ================= WORDPRESS IN /blog =================
 
-# WordPress index protection
 RewriteRule ^blog/index\.php$ - [L]
 
-# WordPress main routing
 RewriteCond %{REQUEST_URI} ^/blog/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^blog/ /blog/index.php [L]
 
 
-# ==================== GENERAL SITE RULES ====================
+# ================= GENERAL CLEAN URL =================
 
 # www → non-www
 RewriteCond %{HTTP_HOST} ^www\.viralcatmeow\.com$ [NC]
@@ -43,25 +39,19 @@ RewriteRule ^(.*)$ https://viralcatmeow.com/$1 [R=301,L]
 RewriteCond %{THE_REQUEST} /index\.html
 RewriteRule ^index\.html$ / [R=301,L]
 
-# .html → clean URL (skip blog)
+# .html → clean (skip blog)
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?]
-RewriteCond %{REQUEST_URI} !^/blogs\.html$
-RewriteCond %{REQUEST_URI} !^/blog-detail\.html$
-RewriteCond %{REQUEST_URI} !^/blog/ [NC]
+RewriteCond %{REQUEST_URI} !^/blog/
 RewriteRule ^(.+?)\.html$ /$1 [R=301,L]
 
-# Serve clean URLs internally
+# serve clean URLs
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteCond %{REQUEST_URI} !^/blogs$
-RewriteCond %{REQUEST_URI} !^/blog-detail/
-RewriteCond %{REQUEST_URI} !^/blog/ [NC]
+RewriteCond %{REQUEST_URI} !^/blog/
 RewriteRule ^([^/]+)/?$ $1.html [L]
 
-
-# ==================== CAREERS ====================
-
-RewriteRule ^careers/?$ /career.html [L]
+# careers
+RewriteRule ^careers/?$ career.html [L]
 
 </IfModule>
