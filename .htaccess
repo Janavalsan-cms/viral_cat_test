@@ -1,76 +1,205 @@
+# ============================================================
+# VIRALCATMEOW.COM - MASTER .HTACCESS
+# ============================================================
+
+Options -Indexes
+ServerSignature Off
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
 
-# ====================
-# 1. WWW → NON-WWW (always first)
-# ====================
+# ============================================================
+# BLOCK 1: SECURITY
+# ============================================================
+
+# Block access to sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|bak|env)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Block XML-RPC attacks (WordPress)
+<Files xmlrpc.php>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# ============================================================
+# BLOCK 2: FORCE HTTPS
+# ============================================================
+
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# ============================================================
+# BLOCK 3: WWW → NON-WWW
+# ============================================================
+
 RewriteCond %{HTTP_HOST} ^www\.viralcatmeow\.com$ [NC]
 RewriteRule ^(.*)$ https://viralcatmeow.com/$1 [R=301,L]
 
-# ====================
-# 2. PROTECT STATIC HTML FILES (serve as-is, no rewriting)
-# ====================
+# ============================================================
+# BLOCK 4: REMOVE TRAILING SLASHES (except root and directories)
+# ============================================================
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/(.+)/$
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# ============================================================
+# BLOCK 5: ROOT INDEX CLEANUP
+# ============================================================
+
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
+RewriteRule ^index\.html$ / [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+index\.php[\s?]
+RewriteRule ^index\.php$ / [R=301,L]
+
+# ============================================================
+# BLOCK 6: PROTECT STATIC HTML FILES (serve as-is, no rewriting)
+# These files must NEVER be rewritten or redirected
+# ============================================================
+
 RewriteCond %{REQUEST_URI} ^/blogs\.html$ [OR]
 RewriteCond %{REQUEST_URI} ^/blog-detail\.html$
 RewriteRule ^ - [L]
 
-# ====================
-# 3. BLOG CLEAN URLS
-# ====================
+# ============================================================
+# BLOCK 7: CUSTOM STATIC PAGES (clean URL routing)
+# ============================================================
 
-# /blogs → /blogs.html
+# /blogs → blogs.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^blogs/?$ /blogs.html [L,NC]
 
-# /blog-detail/slug → /blog-detail.html?slug=slug
+# /blog-detail/slug → blog-detail.html?slug=slug
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^blog-detail/([^/]+)/?$ /blog-detail.html?slug=$1 [L,QSA,NC]
 
-# ====================
-# 4. WORDPRESS /blog DIRECTORY
-# ====================
-
-# Don't touch blog/index.php
-RewriteRule ^blog/index\.php$ - [L]
-
-# If /blog/some-slug maps to /some-slug.html in root, redirect to clean URL
-RewriteCond %{REQUEST_URI} ^/blog/(.+)$
-RewriteCond %{DOCUMENT_ROOT}/%1.html -f
-RewriteRule ^blog/(.+)/?$ /$1 [R=301,L]
-
-# WordPress: pass everything else under /blog/ to WordPress index.php
+# /careers → career.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(blog/.*)$ /blog/index.php [L]
+RewriteRule ^careers/?$ /career.html [L,NC]
 
-# ====================
-# 5. GENERAL SITE RULES
-# ====================
+# ============================================================
+# BLOCK 8: WORDPRESS /blog DIRECTORY
+# ============================================================
 
-# /index.html → /
-RewriteCond %{THE_REQUEST} /index\.html
-RewriteRule ^index\.html$ / [R=301,L]
+# Leave WordPress core files alone
+RewriteRule ^blog/index\.php$ - [L]
+RewriteRule ^blog/wp-admin/$ /blog/wp-admin/index.php [L]
+RewriteCond %{REQUEST_URI} ^/blog/wp-(admin|content|includes)/ [NC]
+RewriteRule ^ - [L]
 
-# Redirect .html → clean URLs (skip blogs.html, blog-detail.html, /blog/)
+# If /blog/slug matches a real .html file in root → redirect to clean URL
+# e.g. /blog/google-ads → /google-ads (if /google-ads.html exists in root)
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^blog/([^/]+)/?$ /$1 [R=301,L]
+
+# Everything else under /blog/ → WordPress
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blog/.*$ /blog/index.php [L]
+
+# ============================================================
+# BLOCK 9: STRIP .HTML EXTENSION (external redirect)
+# Redirects /page.html → /page in browser
+# Skips protected files and /blog/ directory
+# ============================================================
+
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?]
-RewriteCond %{REQUEST_URI} !^/blogs\.html$
-RewriteCond %{REQUEST_URI} !^/blog-detail\.html$
+RewriteCond %{REQUEST_URI} !^/blogs\.html$ [NC]
+RewriteCond %{REQUEST_URI} !^/blog-detail\.html$ [NC]
 RewriteCond %{REQUEST_URI} !^/blog/ [NC]
 RewriteRule ^(.+?)\.html$ /$1 [R=301,L]
 
-# Serve clean URLs internally (skip /blogs, /blog-detail/, /blog/)
-RewriteCond %{REQUEST_FILENAME} !-d
+# ============================================================
+# BLOCK 10: SERVE CLEAN URLS INTERNALLY (internal rewrite)
+# Maps /page → /page.html silently
+# Skips /blogs, /blog-detail/, /blog/
+# ============================================================
+
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteCond %{REQUEST_URI} !^/blogs/?$
-RewriteCond %{REQUEST_URI} !^/blog-detail/
+RewriteCond %{REQUEST_URI} !^/blogs/?$ [NC]
+RewriteCond %{REQUEST_URI} !^/blog-detail/ [NC]
 RewriteCond %{REQUEST_URI} !^/blog/ [NC]
 RewriteRule ^([^/]+)/?$ $1.html [L]
 
-# /careers → /career.html
-RewriteRule ^careers/?$ /career.html [L]
-
 </IfModule>
+
+# ============================================================
+# PERFORMANCE & CACHING
+# ============================================================
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html                  "access plus 1 hour"
+    ExpiresByType text/css                   "access plus 1 year"
+    ExpiresByType application/javascript     "access plus 1 year"
+    ExpiresByType image/jpeg                 "access plus 1 year"
+    ExpiresByType image/png                  "access plus 1 year"
+    ExpiresByType image/webp                 "access plus 1 year"
+    ExpiresByType image/svg+xml              "access plus 1 year"
+    ExpiresByType image/gif                  "access plus 1 year"
+    ExpiresByType image/x-icon               "access plus 1 year"
+    ExpiresByType application/pdf            "access plus 1 month"
+    ExpiresByType font/woff                  "access plus 1 year"
+    ExpiresByType font/woff2                 "access plus 1 year"
+    ExpiresByType application/font-woff      "access plus 1 year"
+    ExpiresByType application/font-woff2     "access plus 1 year"
+</IfModule>
+
+# ============================================================
+# COMPRESSION (GZIP)
+# ============================================================
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/woff
+    AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+# ============================================================
+# SECURITY HEADERS
+# ============================================================
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Cache control for static assets
+    <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|woff|woff2|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # No cache for HTML pages
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ============================================================
+# CUSTOM ERROR PAGES (optional — create these files if needed)
+# ============================================================
+
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+ErrorDocument 500 /500.html
