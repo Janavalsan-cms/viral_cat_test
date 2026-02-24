@@ -2,56 +2,75 @@
 RewriteEngine On
 RewriteBase /
 
-# ================= STATIC BLOG PAGES =================
-
-# Prevent ANY rewriting of these files
-RewriteRule ^blogs\.html$ - [L]
-RewriteRule ^blog-detail\.html$ - [L]
-
-# /blogs → blogs.html
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^blogs/?$ blogs.html [L,NC]
-
-# /blog-detail/slug → blog-detail.html?slug=
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^blog-detail/([^/]+)/?$ blog-detail.html?slug=$1 [L,QSA,NC]
-
-
-# ================= WORDPRESS IN /blog =================
-
-RewriteRule ^blog/index\.php$ - [L]
-
-RewriteCond %{REQUEST_URI} ^/blog/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^blog/ /blog/index.php [L]
-
-
-# ================= GENERAL CLEAN URL =================
-
-# www → non-www
+# ====================
+# 1. WWW → NON-WWW (always first)
+# ====================
 RewriteCond %{HTTP_HOST} ^www\.viralcatmeow\.com$ [NC]
 RewriteRule ^(.*)$ https://viralcatmeow.com/$1 [R=301,L]
 
-# index.html → /
+# ====================
+# 2. PROTECT STATIC HTML FILES (serve as-is, no rewriting)
+# ====================
+RewriteCond %{REQUEST_URI} ^/blogs\.html$ [OR]
+RewriteCond %{REQUEST_URI} ^/blog-detail\.html$
+RewriteRule ^ - [L]
+
+# ====================
+# 3. BLOG CLEAN URLS
+# ====================
+
+# /blogs → /blogs.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blogs/?$ /blogs.html [L,NC]
+
+# /blog-detail/slug → /blog-detail.html?slug=slug
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blog-detail/([^/]+)/?$ /blog-detail.html?slug=$1 [L,QSA,NC]
+
+# ====================
+# 4. WORDPRESS /blog DIRECTORY
+# ====================
+
+# Don't touch blog/index.php
+RewriteRule ^blog/index\.php$ - [L]
+
+# If /blog/some-slug maps to /some-slug.html in root, redirect to clean URL
+RewriteCond %{REQUEST_URI} ^/blog/(.+)$
+RewriteCond %{DOCUMENT_ROOT}/%1.html -f
+RewriteRule ^blog/(.+)/?$ /$1 [R=301,L]
+
+# WordPress: pass everything else under /blog/ to WordPress index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(blog/.*)$ /blog/index.php [L]
+
+# ====================
+# 5. GENERAL SITE RULES
+# ====================
+
+# /index.html → /
 RewriteCond %{THE_REQUEST} /index\.html
 RewriteRule ^index\.html$ / [R=301,L]
 
-# .html → clean (skip blog)
+# Redirect .html → clean URLs (skip blogs.html, blog-detail.html, /blog/)
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?]
-RewriteCond %{REQUEST_URI} !^/blog/
+RewriteCond %{REQUEST_URI} !^/blogs\.html$
+RewriteCond %{REQUEST_URI} !^/blog-detail\.html$
+RewriteCond %{REQUEST_URI} !^/blog/ [NC]
 RewriteRule ^(.+?)\.html$ /$1 [R=301,L]
 
-# serve clean URLs
+# Serve clean URLs internally (skip /blogs, /blog-detail/, /blog/)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteCond %{REQUEST_URI} !^/blog/
+RewriteCond %{REQUEST_URI} !^/blogs/?$
+RewriteCond %{REQUEST_URI} !^/blog-detail/
+RewriteCond %{REQUEST_URI} !^/blog/ [NC]
 RewriteRule ^([^/]+)/?$ $1.html [L]
 
-# careers
-RewriteRule ^careers/?$ career.html [L]
+# /careers → /career.html
+RewriteRule ^careers/?$ /career.html [L]
 
 </IfModule>
