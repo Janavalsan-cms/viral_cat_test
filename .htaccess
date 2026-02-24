@@ -10,10 +10,15 @@ RewriteRule ^(.*)$ https://viralcatmeow.com/$1 [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
 RewriteRule ^index\.html$ / [R=301,L]
 
+# ==================== EXPLICITLY REDIRECT blogs.html AND blog-detail.html ====================
+RewriteCond %{THE_REQUEST} \s/+blogs\.html[\s?]
+RewriteRule ^blogs\.html$ /blogs [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+blog-detail\.html[\s?]
+RewriteRule ^blog-detail\.html$ /blog-detail [R=301,L]
+
 # ==================== REDIRECT .html → clean URLs ====================
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?]
-RewriteCond %{REQUEST_URI} !^/blogs(\.html)?$ [NC]
-RewriteCond %{REQUEST_URI} !^/blog-detail(\.html)?$ [NC]
 RewriteCond %{REQUEST_URI} !^/blog/ [NC]
 RewriteRule ^(.+?)\.html$ /$1 [R=301,L]
 
@@ -45,8 +50,8 @@ RewriteRule ^blog/ /blog/index.php [L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteCond %{REQUEST_URI} !^/blogs(\.html)?$ [NC]
-RewriteCond %{REQUEST_URI} !^/blog-detail(\.html)?$ [NC]
+RewriteCond %{REQUEST_URI} !^/blogs [NC]
+RewriteCond %{REQUEST_URI} !^/blog-detail [NC]
 RewriteCond %{REQUEST_URI} !^/blog/ [NC]
 RewriteRule ^([^/]+)/?$ $1.html [L]
 
